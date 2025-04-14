@@ -1,6 +1,6 @@
 package booklibrary.controller;
 
-import booklibrary.model.ReviewEntity;
+import booklibrary.model.entity.ReviewEntity;
 import booklibrary.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

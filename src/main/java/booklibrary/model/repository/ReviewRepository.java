@@ -1,6 +1,6 @@
-package booklibrary.repository;
+package booklibrary.model.repository;
 
-import booklibrary.model.ReviewEntity;
+import booklibrary.model.entity.ReviewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

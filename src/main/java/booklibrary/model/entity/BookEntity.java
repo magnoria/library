@@ -1,6 +1,8 @@
-package booklibrary.model;
+package booklibrary.model.entity;
 
+import booklibrary.model.dto.BookDto;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -10,6 +12,7 @@ import java.util.List;
 @Table(name = "booklibrary")
 @Data
 @RequiredArgsConstructor
+@Builder
 public class BookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,16 @@ public class BookEntity {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews;
+
+    public BookDto toBookDto(){
+        return BookDto.builder()
+                .bno(bno)
+                .btitle(btitle)
+                .bwriter(bwriter)
+                .bcomments(bcomments)
+                .bpwd(bpwd)
+                .build();
+    }
 
 
 }

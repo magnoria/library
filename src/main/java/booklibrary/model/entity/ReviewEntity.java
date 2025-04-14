@@ -1,13 +1,15 @@
-package booklibrary.model;
+package booklibrary.model.entity;
 
+import booklibrary.model.dto.ReviewDto;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "review")
 @Data
-@RequiredArgsConstructor
+@RequiredArgsConstructor@Builder
 public class ReviewEntity {
     // 리뷰 번호
     @Id
@@ -21,5 +23,13 @@ public class ReviewEntity {
     @ManyToOne
     @JoinColumn(name = "bno") // 외래 키 컬럼명 지정
     private BookEntity book;
+
+    public ReviewDto reviewDto(){
+        return ReviewDto.builder()
+                .rno(rno)
+                .rcontents(rcontents)
+                .rpwd(rpwd)
+                .build();
+    }
 
 }

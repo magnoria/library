@@ -1,9 +1,11 @@
 package booklibrary.service;
 
-import booklibrary.model.BookEntity;
-import booklibrary.repository.BookRepository;
+import booklibrary.model.dto.BookDto;
+import booklibrary.model.entity.BookEntity;
+import booklibrary.model.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -17,17 +19,23 @@ public class BookService {
 
     //1. 책 등록
 
-    public boolean post( BookEntity bookEntity){
+    public boolean post( BookDto bookDto){
+        //암호화
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPwd = passwordEncoder.encode(bookDto.getBpwd());
+        bookDto.setBpwd(hashedPwd);
 
-       BookEntity saveEntity = bookRepository.save(bookEntity);
-       return true;
+        BookEntity bookEntity = bookDto.toEntity();
+        BookEntity saveEntity = bookRepository.save(bookEntity);
+        if (saveEntity.getBno() >= 1){return true;}
+        return false;
     }
 
     //2. 책 개별 수정
 
-    public boolean put( BookEntity bookEntity){
-        Optional<BookEntity> optionalBookEntity = bookRepository.findById(bookEntity.getBno());
-
+    public boolean put( BookDto bookDto){
+        Optional<BookEntity> optionalBookEntity = bookRepository.findById(bookDto.getBno());
+        String password =
         if (optionalBookEntity.isPresent()){
             BookEntity entity = optionalBookEntity.get();
             // 비밀번호 비교
@@ -45,7 +53,7 @@ public class BookService {
 
     //3. 책 개별 삭제
 
-    public boolean delete(BookEntity bookEntity){
+    public boolean delete(BookDto bookDto){
        Optional<BookEntity> optionalBookEntity = bookRepository.findById(bookEntity.getBno());
         System.out.println("optionalBookEntity = " + optionalBookEntity);
        BookEntity entity = optionalBookEntity.get();
@@ -61,7 +69,7 @@ public class BookService {
     }
 
     //4.책 추천 목록조회
-    List<BookEntity> list;
+    List<BookDto> list;
     public List<BookEntity> findAll(){
        List<BookEntity> list = bookRepository.findAll();
        return list;
