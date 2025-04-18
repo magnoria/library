@@ -20,26 +20,30 @@ public class ReviewService {
 
     // 리뷰 등록 {"rcontents" : "안녕하세요" ,  "rpwd" : "123" , "bno" : "2"}
     public boolean onReview(ReviewEntity reviewEntity){
-
+        //암호화
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPwd = passwordEncoder.encode(reviewEntity.getRpwd());
+        reviewEntity.setRpwd(hashedPwd);
 
         ReviewEntity reviewSave = reviewRepository.save(reviewEntity);
+        if (reviewSave.getRno() >=1){return true;}
         return false;
     }
 
     // 리뷰 삭제 // 비밀번호 필요
 
     public boolean deleteReview(ReviewEntity reviewEntity){
-        //암호화
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPwd = passwordEncoder.encode(reviewEntity.getRpwd());
-        reviewEntity.setRpwd(hashedPwd);
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         // 여기 부분 비밀번호 비교가 없음 실패함
         Optional<ReviewEntity> optionalReviewEntity = reviewRepository.findById(reviewEntity.getRno());
         ReviewEntity entity = optionalReviewEntity.get();
         if (reviewEntity.getRno() == entity.getRno()){
-            reviewRepository.deleteById(reviewEntity.getRno());
-            return true;
+            if (bCryptPasswordEncoder.matches(reviewEntity.getRpwd() , entity.getRpwd())) {
+                reviewRepository.deleteById(reviewEntity.getRno());
+                return true;
+            }
         }
         return false;
     }

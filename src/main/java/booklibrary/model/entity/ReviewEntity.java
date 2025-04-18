@@ -2,14 +2,14 @@ package booklibrary.model.entity;
 
 import booklibrary.model.dto.ReviewDto;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "review")
 @Data
-@RequiredArgsConstructor@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class ReviewEntity {
     // 리뷰 번호
     @Id

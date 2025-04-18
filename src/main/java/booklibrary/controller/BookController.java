@@ -49,7 +49,7 @@ public class BookController {
 
     //5. 책 개별 조회
     @GetMapping("/view")
-    public BookEntity findOne(@RequestParam int bno){
+    public BookDto findOne(@RequestParam int bno){
         return bookService.findOne(bno);
     }
 

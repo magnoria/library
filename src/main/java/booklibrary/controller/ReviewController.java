@@ -15,14 +15,14 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    // 리뷰 등록
+    // 리뷰 등록 {"rcontents" : "제목" , "rpwd" : "123"}
     @PostMapping
     public boolean onReview(@RequestBody ReviewEntity reviewEntity){
 
        return reviewService.onReview(reviewEntity);
     }
 
-    // 리뷰 삭제 // 비밀번호 필요
+    // 리뷰 삭제 // 비밀번호 필요 // {"rno" : "1" , "rcontents" : "제목" , "rpwd" : "123"}
     @PostMapping("/delete")
     public boolean deleteReview(@RequestBody ReviewEntity reviewEntity){
         boolean result = reviewService.deleteReview(reviewEntity);
