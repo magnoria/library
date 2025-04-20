@@ -20,6 +20,7 @@ public class ReviewEntity {
 
 
 
+
     @ManyToOne
     @JoinColumn(name = "bno") // 외래 키 컬럼명 지정
     private BookEntity book;
@@ -29,6 +30,7 @@ public class ReviewEntity {
                 .rno(rno)
                 .rcontents(rcontents)
                 .rpwd(rpwd)
+                .bno(this.book != null ? this.book.getBno() : null)
                 .build();
     }
 

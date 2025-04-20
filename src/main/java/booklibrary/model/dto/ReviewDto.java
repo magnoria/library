@@ -1,6 +1,7 @@
 package booklibrary.model.dto;
 
 
+import booklibrary.model.entity.BookEntity;
 import booklibrary.model.entity.ReviewEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,9 @@ public class ReviewDto {
     private int rno;
     private String rcontents; //리뷰 내용
     private String rpwd; // 리뷰 비밀번호
+
+    private int bno;
+
 
     public ReviewEntity reviewEntity(){
         return ReviewEntity.builder()
