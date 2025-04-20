@@ -17,14 +17,14 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    // 리뷰 등록 { "rcontents" : "제목" , "rpwd" : "123" , "bno" : "1"}
+    // 리뷰 등록 { "rname" : "쿠키 " ,"rcontents" : "안녕하세요" ,"rpwd" : "123" , "bno" : "2"}
     @PostMapping
     public boolean onReview(@RequestBody ReviewDto reviewDto){
 
        return reviewService.onReview(reviewDto);
     }
 
-    // 리뷰 삭제 // 비밀번호 필요 // {"rno" : "1" , "rcontents" : "제목" , "rpwd" : "123"}
+    // 리뷰 삭제 // 비밀번호 필요 // {"rno" : "1" ,"btitle" : "쿠키 ",  "rcontents" : "제목" , "rpwd" : "123"}
     @PostMapping("/delete")
     public boolean deleteReview(@RequestBody ReviewEntity reviewEntity){
         boolean result = reviewService.deleteReview(reviewEntity);
@@ -33,8 +33,8 @@ public class ReviewController {
 
     // 리뷰 전체 조회
     @GetMapping
-    public List<BookDto> getReviewRnosByBookBno(@RequestParam int bno){
+    public List<ReviewDto> reviewFindAll(@RequestParam int bno){
 
-        return reviewService.getReviewRnosByBookBno(bno);
+        return reviewService.reviewFindAll(bno);
     }
 }

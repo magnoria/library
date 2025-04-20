@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -23,7 +24,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final BookRepository bookRepository;
 
-    // 리뷰 등록 {"rcontents" : "안녕하세요" ,  "rpwd" : "123" , "bno" : "2"}
+    // 리뷰 등록 { "rname" : "쿠키 " ,"rcontents" : "안녕하세요" ,"rpwd" : "123" , "bno" : "2"}
     public boolean onReview(ReviewDto reviewDto){
         // 1. Dto에서 bno 추출
         int bookBno = reviewDto.getBno();
@@ -41,6 +42,7 @@ public class ReviewService {
             // 4. ReviewEntity 생성 및 BookEntity 연관 설정
             ReviewEntity reviewEntity = ReviewEntity.builder()
                     .rcontents(reviewDto.getRcontents())
+                    .rname(reviewDto.getRname())
                     .rpwd(hashedPwd)
                     .book(book) // BookEntity 설정
                     .build();
@@ -59,7 +61,7 @@ public class ReviewService {
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        // 여기 부분 비밀번호 비교가 없음 실패함
+
         Optional<ReviewEntity> optionalReviewEntity = reviewRepository.findById(reviewEntity.getRno());
         ReviewEntity entity = optionalReviewEntity.get();
         if (reviewEntity.getRno() == entity.getRno()){
@@ -71,13 +73,17 @@ public class ReviewService {
         return false;
     }
 
-    // 리뷰 전체 조회
+    // 리뷰 조회
 
 
-    public List<BookDto> getReviewRnosByBookBno(int bno) {
-        BookEntity book = bookRepository.findById(bno)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책 번호입니다: " + bno));
-        return reviewRepository.findRnoByBook(book.toBookDto());
+    public List<ReviewDto> reviewFindAll(int bno) {
+        BookEntity book = bookRepository.findById(bno).orElse(null);
+                if (book == null){return null;}
+
+       List<ReviewEntity> reviewEntityList = book.getReviews();
+       return  reviewEntityList.stream()
+               .map((entity) -> entity.reviewDto())
+               .collect(Collectors.toList());
 
     }
 }

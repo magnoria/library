@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor@AllArgsConstructor
 public class ReviewDto {
     private int rno;
+    private String rname;
     private String rcontents; //리뷰 내용
     private String rpwd; // 리뷰 비밀번호
 
@@ -21,6 +22,7 @@ public class ReviewDto {
     public ReviewEntity reviewEntity(){
         return ReviewEntity.builder()
                 .rno(rno)
+                .rname(rname)
                 .rcontents(rcontents)
                 .rpwd(rpwd)
                 .build();
